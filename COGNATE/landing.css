@@ -1,0 +1,748 @@
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: Roboto Condensed, Roboto;
+  background:#f5f5f5;
+  color:#222;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+/* ===== HEADER / BANNER ===== */
+.bsu-banner {
+  position: relative;
+  width: 100%;
+  height: 340px;              /* header height */
+  overflow: hidden;
+}
+
+/* Background container */
+.banner-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* background image fills header area */
+.banner-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+  filter: brightness(0.99);
+}
+
+/* white translucent overlay to lighten background for readability */
+.banner-bg::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background: rgba(255,255,255,0.55);
+  pointer-events:none;
+}
+
+/* overlay layer for content */
+.banner-overlay {
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* top-left logo + text container */
+.banner-top {
+  position: absolute;
+  top: 25px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 3;
+}
+
+/* logo */
+.banner-top img {
+  width: 95px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+/* university name + tagline */
+.banner-name {
+  color: #000;
+  line-height: 1.1;
+}
+
+.banner-name h1 {
+  font-size: 35px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  font-family: Averia Serif Libre;
+}
+
+.banner-name .tagline-red {
+  color: #c41e3a;
+  font-size: 30px;
+  font-weight: 700;
+  font-family: Roboto Condensed;
+}
+
+/* center text block */
+.banner-text {
+  position: absolute;
+  top: 55%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #111;
+  padding-right: 150px; /* moves text further right */
+  z-index: 3;
+}
+
+.banner-text .big-line {
+  font-size: 55px;
+  font-weight: 900;
+  margin: 2px 0;
+  color: #222;
+  letter-spacing: 0.5px;
+  font-family: Roboto;
+}
+
+/* bottom-right alangilan image */
+.logo-bottom-right {
+  position: absolute;
+  bottom: 32px;
+  right: 0;
+  width: 550px;
+  max-width: 54%;
+  height: auto;
+  z-index: 4;
+  object-fit: cover;
+  transform: translateY(35px); /* lift above blue line */
+}
+
+/* blue footer slogan */
+.banner-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0078c9;
+  display: flex;           /* allows vertical centering */
+  align-items: center;     /* center text vertically */
+  justify-content: flex-start; /* keep text on the left */
+  padding-left: 250px; /* moves text further right */
+  height: 45px;            /* consistent bar height */
+  z-index: 3;
+}
+
+.banner-footer p {
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  margin: 0;
+}
+
+/* full-screen login section */
+.login-container {
+  position: fixed;
+  inset: 0; /* top, right, bottom, left = 0 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+/* dark background overlay behind the box */
+.login-container .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65); /* darker overlay */
+  backdrop-filter: blur(4px); /* smooth blurred background */
+  z-index: 0;
+}
+
+/* floating login box */
+.login-modal {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  padding: 40px 35px;
+  border-radius: 0;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  width: 90%;
+  max-width: 420px;
+}
+
+/* slight scale-up animation for pop effect */
+.login-modal {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* ===== LOGIN BOX CONTENT ===== */
+
+/* Heading (Login) */
+.login-modal h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0088cc; /* BatStateU blue */
+  margin-bottom: 10px;
+}
+
+/* Welcome message */
+.login-modal .welcome {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+/* Subtitle (Please login) */
+.login-modal .subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Form layout */
+.form-group {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* input hover/focus effects */
+.form-group input:focus {
+  border-color: #0088cc;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0,136,204,0.3);
+}
+
+/* Info box under input */
+.info-box {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  background: #f9f9f9;
+  border-left: 4px solid #0088cc;
+  padding: 10px;
+  border-radius: 4px;
+  color: #333;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.info-box i {
+  font-style: normal;
+  font-weight: bold;
+}
+
+/* Button group */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+/* Common button styles */
+.btn {
+  flex: 1;
+  padding: 11px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  transition: background 0.25s, color 0.25s;
+}
+
+/* Forgot PIN button */
+.btn-forgot {
+  background: #fff;
+  color: #0088cc;
+  border: 1px solid #0088cc;
+}
+
+.btn-forgot:hover {
+  background: #0088cc;
+  color: #fff;
+}
+
+/* Login button */
+.btn-login {
+  background: #0088cc;
+  color: #fff;
+}
+
+.btn-login:hover {
+  background: #006fae;
+}
+
+/* Icon at the top */
+.login-modal .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e6f3fb;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 15px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* responsive tweak */
+@media (max-width: 768px) {
+  .login-modal {
+    padding: 28px 20px;
+  }
+}
+
+/* small input and button styles kept simple */
+.form-group { margin-bottom:16px; }
+.form-group label { display:block; font-weight:600; font-size:13px; margin-bottom:6px; }
+.form-group input { width:100%; padding:10px; border:1px solid #ddd; border-radius:4px; }
+
+/* info box */
+.info-box { display:flex; gap:8px; align-items:flex-start; background:#fafafa; padding:10px; border-left:4px solid #0088cc; color:#333; }
+
+/* buttons */
+.button-group { display:flex; gap:10px; margin-top:18px; }
+.btn { flex:1; padding:11px; border-radius:4px; font-weight:700; cursor:pointer; border:none; }
+.btn-forgot { background:#fff; color:#0088cc; border:1px solid #0088cc; }
+.btn-login { background:#0088cc; color:#fff; }
+
+/* ===================== FOOTER ===================== */
+footer {
+  background:#3a3a3a;
+  color:#fff;
+  border-top:3px solid #0088cc;
+  width:100%;
+}
+
+.footer-content {
+  max-width:1200px;
+  margin:0 auto;
+  padding:18px 28px;
+  display:flex;
+  gap:24px;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  justify-content:space-between;
+  box-sizing:border-box;
+}
+
+.footer-left, .footer-center {
+  min-width:220px;
+  flex:1;
+}
+
+.footer-right {
+  min-width:140px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start; /* align left inside the right column */
+}
+
+.footer-right img { width:80px; height:auto; display:block; }
+
+/* responsive adjustments */
+@media (max-width: 768px) {
+  .banner-top {
+    left: 20px;
+    top: 20px;
+  }
+  .banner-top img {
+    width: 70px;
+  }
+  .banner-name h1 {
+    font-size: 22px;
+  }
+  .banner-name .tagline-red {
+    font-size: 14px;
+  }
+  .banner-text .big-line {
+    font-size: 32px;
+  }
+  .logo-bottom-right {
+    width: 220px;
+    bottom: 20px;
+    transform: translateY(15px);
+  }
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;            /* Full viewport height */
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);  /* Dark overlay */
+  justify-content: center;
+  align-items: center;
+  overflow: auto;          /* Allow modal to scroll if content is too tall */
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 6px;
+  width: 400px;
+  max-height: 90vh;        /* Prevent content from exceeding screen height */
+  overflow-y: auto;        /* Scroll inside modal if content is taller */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.modal-content.large {
+  width: 600px;
+}
+
+.modal-header {
+  background: #e0e0e0;
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px 25px;
+  text-align: center;
+}
+
+p.welcome {
+  font-weight: 600;
+  color: #333;
+  margin: 5px 0;
+}
+
+p.subtitle {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+}
+
+.info-box {
+  background: #f7f7f7;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #555;
+  text-align: left;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+}
+
+.button-group {
+  display: flex;            /* Arrange buttons side by side */
+  gap: 12px;                /* Space between the buttons */
+  flex-wrap: wrap;          /* Wrap on smaller screens */
+}
+
+/* Base button styles */
+.btn {
+  display: inline-flex;     /* Align icon and text horizontally */
+  align-items: center;      /* Vertically center icon and text */
+  gap: 8px;                 /* Space between icon and text */
+  padding: 10px 20px;       /* Button padding */
+  font-size: 10px;          /* Text size */
+  border-radius: 50px;       /* Rounded corners */
+  border: none;             /* Remove default border */
+  cursor: pointer;          /* Pointer on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Forgot button specific styles */
+.btn-forgot {
+  background-color: #d6d5d4a7;   
+  color: rgb(0, 0, 0);
+}
+
+.btn-forgot:hover {
+  background-color: #5c5c5c60;   /* Darker on hover */
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+/* Login button specific styles */
+.btn-login {
+  background-color: #d6d5d4a7;  
+  color: rgb(0, 0, 0);
+  gap: 8px; 
+  font-size: 15px; 
+  padding: 0px 10px;
+}
+
+.btn-login:hover {
+  background-color: #4cae4c82;   /* Darker on hover */
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+.btn-back {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.btn-back:hover {
+  background-color: #e0e0e0;
+}
+
+.option {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.opt-title {
+  color: #c55a11;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.alert {
+  display: flex;               /* Align icon and text horizontally */
+  align-items: flex-start;     /* Align icon to the top of text */
+  gap: 10px;                   /* Space between icon and text */
+  padding: 12px 15px;          /* Inner padding */
+  border-left: 4px solid #f8c921; /* Highlight border */
+  background-color: #fff8e1;   /* Light yellow background */
+  color: #333;                 /* Text color */
+  font-size: 14px;
+  border-radius: 5px;          /* Rounded corners */
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional subtle shadow */
+}
+
+.alert-icon {
+  width: 20px;                 /* Icon size */
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;              /* Prevent icon from shrinking */
+  margin-top: 2px;             /* Align roughly with text top */
+}
+
+.alert.info2 {
+  display: flex;                /* Align icon and text horizontally */
+  align-items: flex-start;      /* Align icon to top of text */
+  gap: 10px;                    /* Space between icon and text */
+  padding: 12px 15px;           /* Inner padding */
+  border-left: 4px solid #f3cd21; /* Yellow border */
+  background-color: #fff9e6;    /* Light yellow background */
+  color: #333;                  /* Text color */
+  font-size: 14px;
+  border-radius: 5px;           /* Rounded corners */
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Optional subtle shadow */
+}
+
+.alert.info3 {
+  display: flex;                /* Align icon and text horizontally */
+  align-items: flex-start;      /* Align icon to top of text */
+  gap: 10px;                    /* Space between icon and text */
+  padding: 12px 15px;           /* Inner padding */
+  border-left: 4px solid #f3cd21; /* Yellow border */
+  background-color: #fff9e6;    /* Light yellow background */
+  color: #333;                  /* Text color */
+  font-size: 14px;
+  border-radius: 5px;           /* Rounded corners */
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Optional subtle shadow */
+}
+
+.info-icon {
+  width: 20px;                  /* Icon size */
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;               /* Prevent icon from shrinking */
+  margin-top: 2px;              /* Align roughly with text top */
+}
+
+.note {
+  font-size: 10px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.note2 {
+  background: #e8f4fd;
+  border-left: 4px solid #2196F3;
+  padding: 10px;
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.note3 {
+  background: #6969690e;
+  border-left: 4px solid #f39f21;
+  padding: 10px;
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.Enteremail {
+  font-size: 15px;
+  margin-bottom: 50px;
+}
+
+.submitbtn {
+  display: inline-flex;        /* Align icon and text horizontally */
+  align-items: center;         /* Vertically center them */
+  gap: 12px;                   /* Space between icon and text */
+  padding: 5px 20px;          /* Button padding */
+  background-color: #ffffff;   /* Button color */
+  color: #0d93c8;                /* Text color */
+  border:2px solid #0d93c8;            
+  border-radius: 50px;          /* Rounded corners */
+  cursor: pointer;             /* Pointer on hover */
+  font-size: 12px;             /* Text size */
+  transition: background-color 0.3s ease; /* Smooth hover */
+}
+
+.submitbtn:hover {
+  background-color: #25b3ff7e;   /* Darker on hover */
+}
+
+.submitbtn .submit-icon {
+  width: 20px;                 /* Icon size */
+  height: 20px;                /* Icon size */
+  object-fit: contain;         /* Keep aspect ratio */
+}
+
+.option input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.info-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.modal-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.forgot-icon {
+  width: 15px;
+  height: 15px;
+  margin-right: 8px;
+}
+
+.login-icon {
+  width: 15px;
+  height: 15px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.application {
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  text-align: left;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+}
+
+.app-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.app-details .alert {
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.app-details .alert.error {
+  background: #fdecea;
+  color: #b00020;
+  text-align: center;
+  font-weight: 600;
+}
+
+.app-details .alert.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+

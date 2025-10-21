@@ -1,0 +1,464 @@
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: Roboto Condensed, Roboto;
+  background:#f5f5f5;
+  color:#222;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+/* ===== HEADER / BANNER ===== */
+.bsu-banner {
+  position: relative;
+  width: 100%;
+  height: 340px;              /* header height */
+  overflow: hidden;
+}
+
+/* Background container */
+.banner-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* background image fills header area */
+.banner-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+  filter: brightness(0.99);
+}
+
+/* white translucent overlay to lighten background for readability */
+.banner-bg::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background: rgba(255,255,255,0.55);
+  pointer-events:none;
+}
+
+/* overlay layer for content */
+.banner-overlay {
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* top-left logo + text container */
+.banner-top {
+  position: absolute;
+  top: 25px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 3;
+}
+
+/* logo */
+.banner-top img {
+  width: 95px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+/* university name + tagline */
+.banner-name {
+  color: #000;
+  line-height: 1.1;
+}
+
+.banner-name h1 {
+  font-size: 35px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  font-family: Averia Serif Libre;
+}
+
+.banner-name .tagline-red {
+  color: #c41e3a;
+  font-size: 30px;
+  font-weight: 700;
+  font-family: Roboto Condensed;
+}
+
+/* center text block */
+.banner-text {
+  position: absolute;
+  top: 55%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #111;
+  padding-right: 150px; /* moves text further right */
+  z-index: 3;
+}
+
+.banner-text .big-line {
+  font-size: 55px;
+  font-weight: 900;
+  margin: 2px 0;
+  color: #222;
+  letter-spacing: 0.5px;
+  font-family: Roboto;
+}
+
+/* bottom-right alangilan image */
+.logo-bottom-right {
+  position: absolute;
+  bottom: 32px;
+  right: 0;
+  width: 550px;
+  max-width: 54%;
+  height: auto;
+  z-index: 4;
+  object-fit: cover;
+  transform: translateY(35px); /* lift above blue line */
+}
+
+/* blue footer slogan */
+.banner-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0078c9;
+  display: flex;           /* allows vertical centering */
+  align-items: center;     /* center text vertically */
+  justify-content: flex-start; /* keep text on the left */
+  padding-left: 250px; /* moves text further right */
+  height: 45px;            /* consistent bar height */
+  z-index: 3;
+}
+
+.banner-footer p {
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  margin: 0;
+}
+
+/* ===================== FOOTER ===================== */
+footer {
+  background:#3a3a3a;
+  color:#fff;
+  border-top:3px solid #0088cc;
+  width:100%;
+}
+
+.footer-content {
+  max-width:1200px;
+  margin:0 auto;
+  padding:18px 28px;
+  display:flex;
+  gap:24px;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  justify-content:space-between;
+  box-sizing:border-box;
+}
+
+.footer-left, .footer-center {
+  min-width:220px;
+  flex:1;
+}
+
+.footer-right {
+  min-width:140px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start; /* align left inside the right column */
+}
+
+.footer-right img { width:110px; height:auto; display:block; }
+
+/* responsive adjustments */
+@media (max-width: 768px) {
+  .banner-top {
+    left: 20px;
+    top: 20px;
+  }
+  .banner-top img {
+    width: 70px;
+  }
+  .banner-name h1 {
+    font-size: 22px;
+  }
+  .banner-name .tagline-red {
+    font-size: 14px;
+  }
+  .banner-text .big-line {
+    font-size: 32px;
+  }
+  .logo-bottom-right {
+    width: 220px;
+    bottom: 20px;
+    transform: translateY(15px);
+  }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* ===== INFO BANNER ===== */
+.info-banner {
+  display: flex;                    /* Align icon + text horizontally */
+  align-items: flex-start;          /* Align icon to top of text */
+  gap: 12px;                        /* Space between icon and text */
+  background-color: #fff8e1;        /* Soft yellow background */
+  border-left: 4px solid #f8c921;   /* Yellow accent border */
+  color: #333;                      /* Text color */
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 14px 18px;               /* Inner padding */
+  border-radius: 8px;               /* Rounded corners */
+  margin: 20px auto;                /* Spacing around banner */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Subtle shadow */
+  max-width: 1000px;                /* Keeps banner from being too wide */
+}
+
+/* Icon styling */
+.info-banner img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Header Section */
+.header-section {
+    text-align: center;
+    padding: 30px 20px 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.header-section h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.header-section p {
+    font-size: 13px;
+    color: #666;
+}
+
+/* Quota Cards */
+.quota-cards {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.quota-card {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 250px;
+}
+
+.quota-icon {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.quota-info h3 {
+    font-size: 12px;
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.quota-info p {
+    font-size: 11px;
+    color: #999;
+}
+
+/* Progress Steps */
+    .progress-container {
+    padding: 30px 20px;
+    background: #fafafa;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.progress-line {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background: #e0e0e0;
+    z-index: 0;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 8px;
+}
+
+.step.active .step-circle {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+}
+
+.step.active .step-circle::before {
+    content: '✓';
+    font-size: 18px;
+}
+
+.step-label {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    max-width: 80px;
+}
+
+.step.active .step-label {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Content Section */
+.content-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 40px;
+}
+
+.left-content {
+    background: #f5f5f5;
+    padding: 30px;
+    border-radius: 6px;
+}
+
+.left-content p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.left-content a {
+    color: #2196F3;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.left-content a:hover {
+    text-decoration: underline;
+}
+
+.right-content {
+    padding: 20px;
+}
+
+.right-content h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.right-content p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.right-content .highlight {
+    font-weight: 600;
+    color: #333;
+}
+
+.start-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.start-button:hover {
+    background: #45a049;
+}
+
+@media (max-width: 768px) {
+    .content-section {
+    grid-template-columns: 1fr;
+    }
+
+    .progress-steps {
+    flex-wrap: wrap;
+    gap: 20px;
+    }
+
+    .quota-cards {
+    flex-direction: column;
+    }
+}
