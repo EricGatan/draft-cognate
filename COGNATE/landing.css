@@ -2,7 +2,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  font-family: Roboto Condensed, Roboto;
+  font-family:'Arial', sans-serif;
   background:#f5f5f5;
   color:#222;
   display:flex;
@@ -189,132 +189,6 @@ body {
 
 /* ===== LOGIN BOX CONTENT ===== */
 
-/* Heading (Login) */
-.login-modal h2 {
-  font-size: 28px;
-  font-weight: 800;
-  color: #0088cc; /* BatStateU blue */
-  margin-bottom: 10px;
-}
-
-/* Welcome message */
-.login-modal .welcome {
-  font-size: 15px;
-  color: #333;
-  margin-bottom: 4px;
-  font-weight: 600;
-}
-
-/* Subtitle (Please login) */
-.login-modal .subtitle {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-/* Form layout */
-.form-group {
-  text-align: left;
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: 600;
-  font-size: 13px;
-  color: #333;
-  margin-bottom: 6px;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-/* input hover/focus effects */
-.form-group input:focus {
-  border-color: #0088cc;
-  outline: none;
-  box-shadow: 0 0 4px rgba(0,136,204,0.3);
-}
-
-/* Info box under input */
-.info-box {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  background: #f9f9f9;
-  border-left: 4px solid #0088cc;
-  padding: 10px;
-  border-radius: 4px;
-  color: #333;
-  font-size: 13px;
-  margin-top: 8px;
-}
-
-.info-box i {
-  font-style: normal;
-  font-weight: bold;
-}
-
-/* Button group */
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-/* Common button styles */
-.btn {
-  flex: 1;
-  padding: 11px;
-  border-radius: 6px;
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-  font-size: 14px;
-  transition: background 0.25s, color 0.25s;
-}
-
-/* Forgot PIN button */
-.btn-forgot {
-  background: #fff;
-  color: #0088cc;
-  border: 1px solid #0088cc;
-}
-
-.btn-forgot:hover {
-  background: #0088cc;
-  color: #fff;
-}
-
-/* Login button */
-.btn-login {
-  background: #0088cc;
-  color: #fff;
-}
-
-.btn-login:hover {
-  background: #006fae;
-}
-
-/* Icon at the top */
-.login-modal .icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #e6f3fb;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 15px;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -426,11 +300,14 @@ footer {
 
 .modal-content {
   background: #fff;
-  border-radius: 6px;
+  border: 2px solid #ccc;       /* ✅ visible border */
+  border-radius: 10px;
   width: 400px;
-  max-height: 90vh;        /* Prevent content from exceeding screen height */
-  overflow-y: auto;        /* Scroll inside modal if content is taller */
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); /* soft drop shadow */
+  padding: 0;                   /* keep content spacing consistent */
+  box-sizing: border-box;
 }
 
 .modal-content.large {
@@ -438,10 +315,12 @@ footer {
 }
 
 .modal-header {
-  background: #e0e0e0;
-  padding: 10px 20px;
+  background: #f5f5f5;
+  padding: 12px 20px;
   text-align: left;
   border-bottom: 1px solid #ccc;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .modal-header h2 {
@@ -462,21 +341,32 @@ p.welcome {
 }
 
 p.subtitle {
+  position: relative;       /* So it can overlap border */
+  top: 10px;               /* Move upward to overlap border */
+  display: inline-block;    /* Shrinks to text size */
+  background: #fff;         /* White behind text only */
+  padding: 0 6px;           /* Small padding left-right */
+  font-size: 13px;
   color: #777;
-  font-size: 14px;
-  margin-bottom: 20px;
+  z-index: 2;
+  line-height: 1;           /* Tightens the text box height */
 }
 
 .form-group {
-  text-align: left;
-  margin-bottom: 15px;
+  position: relative; /* Make container the reference point */
+  padding: 25px;
+  border: 2px solid #ccc; /* The main border box */
+  border-radius: 10px;
+  background: #fff;
+  box-sizing: border-box;
 }
 
 .form-group label {
   display: block;
   font-size: 14px;
   color: #555;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
+  text-align: left
 }
 
 .form-group input {
@@ -484,96 +374,149 @@ p.subtitle {
   padding: 8px;
   border: 1px solid #bbb;
   border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 .info-box {
   background: #f7f7f7;
   padding: 10px;
-  border-radius: 4px;
   font-size: 13px;
   color: #555;
   text-align: left;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-}
-
-.button-group {
-  display: flex;            /* Arrange buttons side by side */
-  gap: 12px;                /* Space between the buttons */
-  flex-wrap: wrap;          /* Wrap on smaller screens */
-}
-
-/* Base button styles */
-.btn {
-  display: inline-flex;     /* Align icon and text horizontally */
-  align-items: center;      /* Vertically center icon and text */
-  gap: 8px;                 /* Space between icon and text */
-  padding: 10px 20px;       /* Button padding */
-  font-size: 10px;          /* Text size */
-  border-radius: 50px;       /* Rounded corners */
-  border: none;             /* Remove default border */
-  cursor: pointer;          /* Pointer on hover */
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  border: 1px solid #ffffff;
 }
 
 /* Forgot button specific styles */
 .btn-forgot {
-  background-color: #d6d5d4a7;   
-  color: rgb(0, 0, 0);
+  padding: 5px 10px;
+  background-color: #ffffff;
+  color: #656565;
+  border: 2px solid #ccc;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .btn-forgot:hover {
-  background-color: #5c5c5c60;   /* Darker on hover */
+  background-color: #99999982;   /* Darker on hover */
   transform: translateY(-2px); /* Subtle lift effect */
 }
 
 /* Login button specific styles */
 .btn-login {
-  background-color: #d6d5d4a7;  
-  color: rgb(0, 0, 0);
-  gap: 8px; 
-  font-size: 15px; 
-  padding: 0px 10px;
+  padding: 5px 10px;
+  background-color: #ffffff;
+  color: #656565;
+  border: 2px solid #ccc;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
 }
 
 .btn-login:hover {
-  background-color: #4cae4c82;   /* Darker on hover */
+  background-color: #c9c9c982;   /* Darker on hover */
   transform: translateY(-2px); /* Subtle lift effect */
 }
 
 .btn-back {
-  background-color: #f0f0f0;
-  color: #333;
-  border: 1px solid #ccc;
+  padding: 5px 20px;
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #ccc;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
 }
 
 .btn-back:hover {
-  background-color: #e0e0e0;
+  background-color: #99999982;   /* Darker on hover */
+  transform: translateY(-2px); /* Subtle lift effect */
 }
 
 .option {
-  margin-bottom: 25px;
-  text-align: left;
+  margin: 20px auto;
+  border: 2px solid #EEEEEE;
+  border-radius: 10px;
+  background-color: #ffffff;
+  padding: 30px 25px 20px;   /* extra top padding for the title space */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;        /* make the container reference point */
 }
 
+/* Title styles */
 .opt-title {
-  color: #c55a11;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 4px;
-  margin-bottom: 8px;
+  position: absolute;        /* float above the border */
+  top: -15px;                /* overlap upward */
+  left: 50%;                 /* move to the center horizontally */
+  transform: translateX(-50%); /* truly center it */
+  background: #EEEEEE;          /* white background hides border */
+  padding: 5px 12px;            /* little space around text */
+  font-size: 15px;
+  line-height: 1;
+  z-index: 2;
+  font-weight: normal;
+  border-radius: 4px;        /* optional, looks softer */
+  color: #c51111;
 }
 
-.alert {
+.details-container {
+  position: relative;
+  margin: 0 auto;                 /* truly centers horizontally */
+  display: block;                 /* ensure it's treated as a block */
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  padding: 30px 25px;
+  width: 500px;
+  max-width: 100%;                /* makes it responsive on small screens */
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Centered overlapping title */
+.opt-title2 {
+  position: absolute;
+  top: -14px;                       /* slightly above border */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #EEEEEE;
+  color: #00b230;
+  border-radius: 4px;
+  border: 1px solid #EEEEEE;
+  padding: 5px 12px;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 1;
+  z-index: 2;
+}
+
+/* Content inside */
+.app-details {
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+}
+
+.alert.info {
   display: flex;               /* Align icon and text horizontally */
   align-items: flex-start;     /* Align icon to the top of text */
   gap: 10px;                   /* Space between icon and text */
   padding: 12px 15px;          /* Inner padding */
-  border-left: 4px solid #f8c921; /* Highlight border */
   background-color: #fff8e1;   /* Light yellow background */
   color: #333;                 /* Text color */
   font-size: 14px;
-  border-radius: 5px;          /* Rounded corners */
-  margin-bottom: 15px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional subtle shadow */
 }
 
@@ -590,12 +533,9 @@ p.subtitle {
   align-items: flex-start;      /* Align icon to top of text */
   gap: 10px;                    /* Space between icon and text */
   padding: 12px 15px;           /* Inner padding */
-  border-left: 4px solid #f3cd21; /* Yellow border */
   background-color: #fff9e6;    /* Light yellow background */
   color: #333;                  /* Text color */
   font-size: 14px;
-  border-radius: 5px;           /* Rounded corners */
-  margin-bottom: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Optional subtle shadow */
 }
 
@@ -604,12 +544,9 @@ p.subtitle {
   align-items: flex-start;      /* Align icon to top of text */
   gap: 10px;                    /* Space between icon and text */
   padding: 12px 15px;           /* Inner padding */
-  border-left: 4px solid #f3cd21; /* Yellow border */
   background-color: #fff9e6;    /* Light yellow background */
   color: #333;                  /* Text color */
   font-size: 14px;
-  border-radius: 5px;           /* Rounded corners */
-  margin-bottom: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Optional subtle shadow */
 }
 
@@ -624,7 +561,12 @@ p.subtitle {
 .note {
   font-size: 10px;
   color: #333;
-  margin-bottom: 10px;
+  text-align: center;
+}
+
+.note1 {
+  font-size: 10px;
+  color: #333;
 }
 
 .note2 {
@@ -633,7 +575,6 @@ p.subtitle {
   padding: 10px;
   font-size: 13px;
   color: #333;
-  margin-bottom: 10px;
 }
 
 .note3 {
@@ -642,8 +583,6 @@ p.subtitle {
   padding: 10px;
   font-size: 13px;
   color: #333;
-  margin-bottom: 20px;
-  margin-top: 20px;
 }
 
 .Enteremail {
@@ -680,7 +619,12 @@ p.subtitle {
   padding: 8px;
   border: 1px solid #bbb;
   border-radius: 4px;
-  margin-bottom: 10px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.option p {
+  margin-bottom: -8px;
 }
 
 .info-icon {
@@ -731,7 +675,6 @@ p.subtitle {
   padding: 12px;
   border-radius: 5px;
   font-size: 14px;
-  margin-top: 10px;
 }
 
 .app-details .alert.error {
@@ -746,3 +689,50 @@ p.subtitle {
   color: #2e7d32;
 }
 
+/* ===== TOAST NOTIFICATION ===== */
+.toast {
+  visibility: hidden;
+  min-width: 260px;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 12px 16px;
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.5s, bottom 0.5s;
+}
+
+.toast.show {
+  visibility: visible;
+  opacity: 1;
+  top: 80px;
+}
+
+.toast.success {
+  background: #2e7d32;
+}
+.toast.error {
+  background: #c62828;
+}
+.toast.info {
+  background: #0277bd;
+}
+
+/* ===== NOTIFICATION WITHIN LOGIN ===== */
+.notif {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+  color: #c62828;
+}
+
+.button-container {
+  text-align: right;
+  margin-right: 30px;
+}     

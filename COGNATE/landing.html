@@ -37,121 +37,134 @@
     </div>
   </header>
 
-  <!-- ===== LOGIN SECTION ===== -->
-  <section class="login-container">
-    <div class="overlay"></div>
+<!-- ===== LOGIN SECTION ===== -->
+<section class="login-container">
+  <div class="overlay"></div>
 
-    <!-- LOGIN MODAL -->
-    <div id="loginModal" class="modal active">
-      <div class="modal-content">
-        <div class="modal-header">
-          <img src="user.png" alt="Info" class="modal-icon">
-          <span>LOGIN</span>
+  <!-- LOGIN MODAL -->
+  <div id="loginModal" class="modal active">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img src="user.png" alt="Info" class="modal-icon">
+        <span>LOGIN</span>
+      </div>
+      <div class="modal-body">
+        <p class="welcome">Welcome to College Applicant's Portal</p>
+        <p class="subtitle">Please login</p>
+
+       <div class="form-group">
+        <label for="appNumber">Application Number</label>
+        <input 
+          type="text" 
+          id="appNumber" 
+          placeholder="21-12345" 
+          pattern="\d{2}-\d{5}" 
+          >
+         
+        <label for="pin">PIN</label> 
+        <input 
+          type="password" 
+          id="pin" 
+          placeholder="••••" 
+          pattern="\d{4}" 
+          required 
+          minlength="4" 
+          maxlength="4">
+
+        <div class="info-box">
+          <img src="information-button.png" alt="Info" class="info-icon">
+          <span>Your PIN is the 4-digit number sent to your email during your successful application.</span>
         </div>
-        <div class="modal-body">
-          <p class="welcome">Welcome to College Applicant's Portal</p>
-          <p class="subtitle">Please login</p>
+      </div>
+      
+        <div id="loginNotif" class="notif"></div>
 
-          <div class="form-group">
-            <label for="appNumber">Application Number</label>
-            <input type="text" id="appNumber" placeholder="21-12345" pattern="\d{2}-\d{5}" required title="Please enter your Application Number">
-          </div>
+        <div class="button-group">
+          <button class="btn btn-forgot" onclick="showForgot()">
+            <img src="question.png" alt="Info" class="forgot-icon"> Forgot PIN? Click here
+          </button>
 
-          <div class="form-group">
-            <label for="pin">PIN</label>
-            <input type="password" id="pin" placeholder="••••" required minlength="4" maxlength="4">
-          </div>
-
-          <div class="info-box">
-            <img src="information-button.png" alt="Info" class="info-icon">
-            <span>Your PIN is the 4-digit number sent to your email during your successful application.</span>
-          </div>
-
-          <div class="button-group">
-            <button class="btn btn-forgot" onclick="showForgot()">
-              <img src="question.png" alt="Info" class="forgot-icon"> Forgot PIN? Click here
-            </button>
-
-            <button class="btn btn-login" onclick="window.location.href='welcome.html'">
-              <img src="unlock.png" alt="Info" class="login-icon"> Sign-in
-            </button>
-          </div>
+          <button class="btn btn-login" onclick="login()">
+            <img src="unlock.png" alt="Info" class="login-icon"> Sign-in
+          </button>
         </div>
       </div>
     </div>
-
-    <!-- FORGOT PIN MODAL -->
-    <div id="forgotModal" class="modal">
-      <div class="modal-content large">
-        <div class="modal-header">
-          <h2>🔑 Verify / Forgot PIN</h2>
-        </div>
-        <div class="modal-body">
-          <div class="option">
-            <h3 class="opt-title">Option 1: Send to email</h3>
-           
-            <div class="alert info">
-              <img src="warning.png" alt="Info" class="alert-icon">
-              Gmail users may be experiencing issues receiving emails from our domain. We understand the significance of smooth communication, and we are actively working to address this matter.
-            </div>
-            
-          
-            <div class="alert info2">
-              <img src="information-button.png" alt="Info" class="info-icon">
-            This facility will try to send your portal login details to the email address you specified in your application. Kindly input your email address below to proceed.
-            </div>
-             
-            <div class="Enteremail"> Enter email </p>
-            <input type="email" placeholder="Enter email" required>
-           
-            <div class="note">*If you do not receive the email within a few minutes after send, please check your spam folder.</div>
-            
-            <div class="note2">Note : If the provided information above is accurate and complete, yet the system generated a Not found error, it is possible that it may have been incorrectly encoded during the submission of your application. Please reach out to the Testing Admission Office for necessary connections.</div>
-            
-            <button class="submitbtn">  
-              <img src="paperlane.png" alt="Info" class="submit-icon"> Submit
-            </button>
-          </div>
-
-          <div class="option">
-  <h3 class="opt-title">Option 2: Verify here</h3>
-
-  <div class="alert info3">
-    <img src="information-button.png" alt="Info" class="info-icon">
-    In case of email delivery failure, please utilize this option instead. You need to enter the applicant's details below for verification.
   </div>
 
-  <p>Last Name</p>
-  <input type="text" id="lastName" placeholder="Lastname" required>
+  <!-- FORGOT PIN MODAL -->
+  <div id="forgotModal" class="modal">
+    <div class="modal-content large">
+      <div class="modal-header">
+        <h2>🔑 Verify / Forgot PIN</h2>
+      </div>
+      <div class="modal-body">
+        <div class="option">
+          <h3 class="opt-title">Option 1: Send to email</h3>
+          <div class="alert info">
+            <img src="warning.png" alt="Info" class="alert-icon">
+            Gmail users may experience issues receiving emails from our domain. We understand the significance of smooth communication, and we are actively working to address this matter.
+          </div>
+          <div class="alert info2">
+            <img src="info.png" alt="Info" class="info-icon">
+            This facility will try to send your portal login details to the email address you specified in your application. Kindly input your email address below to proceed.
+          </div>
+          <p>Email address</p>
+          <input type="email" id="emailSend" placeholder="Enter email" required>
+          <div class="note">*If you do not receive the email within a few minutes after send, please check your Spam folder.</div>
+          <div class="note3">
+            Note: If the provided information above is accurate and complete, yet the system generated a 'Not found' error, it is possible that it may have been incorrectly encoded during the submission of your application. Please reach out to the Testing Admission Office for necessary corrections.
+          </div>
+          
+          <button class="submitbtn" onclick="sendEmail()">
+            <img src="paperlane.png" alt="Info" class="submit-icon"> Submit
+          </button>
+        </div>
 
-  <p>First Name</p>
-  <input type="text" id="firstName" placeholder="Firstname" required>
+        <div class="option">
+          <h3 class="opt-title">Option 2: Verify here</h3>
+          <div class="alert info3">
+            <img src="info.png" alt="Info" class="info-icon">
+            In case of email delivery failure, please utilize this option instead. You need to enter the applicant's details below for verification.
+          </div>
 
-  <p>Birthdate</p>
-  <input type="date" id="birthDate" required>
+          <p>Last Name</p>
+          <input type="text" id="lastName" placeholder=" " required>
 
-  <p>Email</p>
-  <input type="email" id="email" placeholder="Email" required>
-  <div class="note">The email address you specified in your application</div>
+          <p>First Name</p>
+          <input type="text" id="firstName" placeholder=" " required>
 
-  <button class="submitbtn" onclick="verifyApplicant()">  
-    <img src="paperlane.png" alt="Info" class="submit-icon"> Submit
-  </button>
+          <p>Birthdate</p>
+          <input type="date" id="birthDate" required>
 
-  <!-- Where the result will show -->
-   <div class="application" onclick="showApplicationDetails(exampleData)" >
-  <h3 class="app-title">Application Details</h3>
-  <div id="applicationDetails" class="app-details"></div>
-</div>
-  
-<div class="note3">Note : If the provided information above is accurate and complete, yet the system generated a Not found error, it is possible that it may have been incorrectly encoded during the submission of your application. Please reach out to the Testing Admission Office for necessary connections.</div>
+          <p>Email</p>
+          <input type="email" id="emailVerify" placeholder="Enter email" required>
+          <div class="note1">The email address you specified in your application</div>
 
-<button class="btn btn-back" onclick="showLogin()">⬅ Back to Login</button>
+          <button class="submitbtn" onclick="verifyApplicant()">
+            <img src="paperlane.png" alt="Info" class="submit-icon"> Submit
+          </button>
+          
+          <div class="details-container">
+            <h3 class="opt-title2">Application Details</h3>
+            <div id="applicationDetails" class="app-details">
+            </div>
+          </div>
 
-</div>
+          <div class="note3">Note: If the provided information above is accurate and complete, yet the system generated a 'Not found' error, it is possible that it may have been incorrectly encoded during the submission of your application. Please reach out to the Testing Admission Office for necessary corrections.</div>
+        </div>
+
+        <div class="button-container">
+           <button class="btn btn-back" onclick="showLogin()">Close</button>
+          </div>
+          
       </div>
     </div>
-  </section>
+  </div>
+
+  <!-- Notification pop-up -->
+  <div id="toast" class="toast"></div>
+</section>
 
   <!-- ===== FOOTER ===== -->
   <footer>
