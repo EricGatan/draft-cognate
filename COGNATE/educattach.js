@@ -81,114 +81,217 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSteps();
 });
 
-  // ======= FILE UPLOAD =======
-  const uploadedFiles = {};
+// =====================================================
+// FILE STORAGE (store file + type)
+// =====================================================
+let uploadedFiles = {
+  1: null,
+  2: null,
+  3: null,
+  4: null,
+  5: null
+};
 
-  window.handleFileUpload = function (fileNumber, fileType) {
-    const fileInput = document.getElementById(`file${fileNumber}`);
-    const statusElement = document.getElementById(`status${fileNumber}`);
-    const file = fileInput.files[0];
+// =====================================================
+// HANDLE FILE UPLOAD
+// - label param optional. If not passed, reads data-type from the input element.
+// - removes red error highlights for that upload box when file is selected
+// =====================================================
+function handleFileUpload(num, label) {
+  const input = document.getElementById(`file${num}`);
+  const status = document.getElementById(`status${num}`);
+  const file = input && input.files ? input.files[0] : null;
 
-    if (file) {
-      statusElement.textContent = file.name;
+  if (file) {
+    const type = label || (input && input.dataset && input.dataset.type) || "Required";
+    uploadedFiles[num] = { file, type };
 
-      uploadedFiles[fileNumber] = {
-        type: fileType,
-        name: file.name,
-        size: formatFileSize(file.size),
-        number: fileNumber
-      };
-
-      updateFileTable();
-    }
-  };
-
-  function formatFileSize(bytes) {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
-  }
-
-  function updateFileTable() {
-    const tbody = document.getElementById("fileTableBody");
-    const fileKeys = Object.keys(uploadedFiles).sort((a, b) => a - b);
-
-    if (fileKeys.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="5">
-            <div class="empty-state">
-              <div class="empty-icon">🔍</div>
-              <div class="empty-text">No Attached files</div>
-            </div>
-          </td>
-        </tr>
+    // update status text
+    if (status) {
+      status.innerHTML = `
+        <i class="fa-solid fa-circle-check" style="color:#28a745;"></i>
+        ${escapeHtml(file.name)}
       `;
-      return;
     }
 
-    tbody.innerHTML = fileKeys
-      .map(key => {
-        const file = uploadedFiles[key];
-        return `
-          <tr class="file-row">
-            <td>${file.number}</td>
-            <td>${file.type}</td>
-            <td>${file.name}</td>
-            <td>${file.size}</td>
-            <td>
-              <div class="status-icons">
-                <div class="status-icon success" title="File uploaded successfully">✓</div>
-                <div class="status-icon danger" onclick="removeFile(${key})" title="Remove file">×</div>
-              </div>
-            </td>
-          </tr>
-        `;
-      })
-      .join("");
+    // Remove red highlight from upload box (if any)
+    const uploadBox = input ? input.closest(".upload-controls") : null;
+    if (uploadBox) uploadBox.classList.remove("input-error");
+
+    // Also remove 'input-error' from any required text input inside the same upload-controls area
+    if (uploadBox) {
+      const requiredInside = uploadBox.querySelectorAll(".form-input.input-error");
+      requiredInside.forEach(el => el.classList.remove("input-error"));
+    }
+
+    updateFileList();
+  }
+}
+
+// =====================================================
+// UPDATE FILE LIST TABLE
+// =====================================================
+function updateFileList() {
+  const tableBody = document.getElementById("fileTableBody");
+  if (!tableBody) return;
+  tableBody.innerHTML = "";
+
+  let noFiles = true;
+
+  Object.keys(uploadedFiles).forEach(key => {
+    const slot = uploadedFiles[key];
+    if (!slot) return;
+
+    noFiles = false;
+    const { file, type } = slot;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${escapeHtml(key)}</td>
+      <td>${escapeHtml(type)}</td>
+      <td>${escapeHtml(file.name)}</td>
+      <td>${(file.size / 1024).toFixed(1)} KB</td>
+      <td style="text-align:center;">
+        <i class="fa-solid fa-circle-check" style="color:#28a745;"></i>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  if (noFiles) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5">
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <div class="empty-text">No Attached files</div>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+}
+
+// small helper to avoid HTML injection in file names/types
+function escapeHtml(str) {
+  if (str === null || str === undefined) return "";
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+// =====================================================
+// NOTIFICATION/ALERT SYSTEM
+// - showNotification(message, status, autoHideMs)
+// - status: "error"|"success"|undefined
+// =====================================================
+function showNotification(message) {
+  let noti = document.getElementById("notification");
+  let notiText;
+
+  // If notification container does not exist, create one
+  if (!noti) {
+    noti = document.createElement("div");
+    noti.id = "notification";
+
+    noti.style.position = "fixed";
+    noti.style.right = "20px";
+    noti.style.top = "20px";
+    noti.style.zIndex = "9999";
+    noti.style.display = "flex";
+    noti.style.alignItems = "center";
+    noti.style.padding = "12px 16px";
+    noti.style.borderRadius = "8px";
+    noti.style.boxShadow = "0 6px 18px rgba(0,0,0,0.1)";
+    noti.style.fontSize = "15px";
+    noti.style.fontWeight = "500";
+
+    // RED ALERT STYLE
+    noti.style.background = "#ffe3e3";
+    noti.style.color = "#c20000";
+
+    notiText = document.createElement("div");
+    notiText.id = "notification-text";
+
+    noti.appendChild(notiText); // NO CLOSE BUTTON ANYMORE
+    document.body.appendChild(noti);
+  } else {
+    notiText = document.getElementById("notification-text");
   }
 
-  window.removeFile = function (fileNumber) {
-    const confirmBox = document.getElementById("confirmBox");
-    const confirmYes = document.getElementById("confirmYes");
-    const confirmNo = document.getElementById("confirmNo");
+  // Set message
+  notiText.innerText = message;
 
-    confirmBox.style.display = "flex"; // show the box
+  // Ensure red styling even if the element is reused
+  noti.style.background = "#ffe3e3";
+  noti.style.border = "1px solid #ff9b9b";
+  noti.style.color = "#c20000";
 
-    // clear previous listeners
-    confirmYes.onclick = null;
-    confirmNo.onclick = null;
+  // Show it
+  noti.style.display = "flex";
 
-    confirmYes.onclick = () => {
-      delete uploadedFiles[fileNumber];
-      document.getElementById(`file${fileNumber}`).value = "";
-      document.getElementById(`status${fileNumber}`).textContent = "No file chosen";
-      updateFileTable();
-      confirmBox.style.display = "none";
-    };
+  // Auto-hide after 4 seconds
+  if (noti._hideTimeout) clearTimeout(noti._hideTimeout);
 
-    confirmNo.onclick = () => {
-      confirmBox.style.display = "none";
-    };
+  noti._hideTimeout = setTimeout(() => {
+    noti.style.display = "none";
+  }, 4000);
+}
+
+// =====================================================
+// REMOVE FILE (with confirm box fallback)
+// - When removing, add red error highlight back to upload box
+// =====================================================
+window.removeFile = function (fileNumber) {
+  const confirmBox = document.getElementById("confirmBox");
+  const confirmYes = document.getElementById("confirmYes");
+  const confirmNo = document.getElementById("confirmNo");
+
+  const doRemove = () => {
+    uploadedFiles[fileNumber] = null;
+    const input = document.getElementById(`file${fileNumber}`);
+    if (input) input.value = "";
+    const status = document.getElementById(`status${fileNumber}`);
+    if (status) status.textContent = "No file chosen";
+
+    // add input-error class back to upload box to indicate missing
+    if (input) {
+      const uploadBox = input.closest(".upload-controls");
+      if (uploadBox) uploadBox.classList.add("input-error");
+    }
+
+    updateFileList();
+    showNotification("File removed. Please upload a file for this slot.", "error");
   };
 
-  // ======= FORM VALIDATION & NOTIFICATION =======
+  if (confirmBox && confirmYes && confirmNo) {
+    confirmBox.style.display = "flex";
+    confirmYes.onclick = () => {
+      doRemove();
+      confirmBox.style.display = "none";
+    };
+    confirmNo.onclick = () => confirmBox.style.display = "none";
+  } else {
+    // no confirm modal available -> remove immediately
+    doRemove();
+  }
+};
+
+// =====================================================
+// FORM VALIDATION & NEXT BUTTON
+// - Single consolidated next-button handler
+// =====================================================
+(function setupNextButton() {
   const nextBtn = document.querySelector(".next-btn");
+  if (!nextBtn) return;
 
   nextBtn.addEventListener("click", function (e) {
     e.preventDefault();
 
     const requiredInputs = document.querySelectorAll(".form-input[required]");
-    const fileInputs = [
-      document.getElementById("file1"),
-      document.getElementById("file2"),
-      document.getElementById("file3"),
-      document.getElementById("file4"),
-      document.getElementById("file5")
-    ];
-
     let isValid = true;
 
     // Remove previous error highlights
@@ -196,58 +299,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Check required inputs
     requiredInputs.forEach(input => {
-      if (!input.value.trim()) {
+      if (!input.value || !input.value.trim()) {
         input.classList.add("input-error");
         isValid = false;
       }
     });
 
-    // Check file uploads
-    fileInputs.forEach(fileInput => {
-      if (!fileInput.files.length) {
-        const uploadBox = fileInput.closest(".upload-controls");
-        if (uploadBox) uploadBox.classList.add("input-error");
+    // Check file uploads (use uploadedFiles to reflect actual uploads)
+    Object.keys(uploadedFiles).forEach(key => {
+      if (!uploadedFiles[key]) {
+        const fileInput = document.getElementById(`file${key}`);
+        if (fileInput) {
+          const uploadBox = fileInput.closest(".upload-controls");
+          if (uploadBox) uploadBox.classList.add("input-error");
+        }
         isValid = false;
       } else {
-        const uploadBox = fileInput.closest(".upload-controls");
-        if (uploadBox) uploadBox.classList.remove("input-error");
+        const fileInput = document.getElementById(`file${key}`);
+        if (fileInput) {
+          const uploadBox = fileInput.closest(".upload-controls");
+          if (uploadBox) uploadBox.classList.remove("input-error");
+        }
       }
     });
 
-    // Show notification
     if (!isValid) {
+      // highlight missing statuses visually
+      Object.keys(uploadedFiles).forEach(key => {
+        if (!uploadedFiles[key]) {
+          const st = document.getElementById(`status${key}`);
+          if (st) {
+            st.innerHTML = `
+              <i class="fa-solid fa-circle-xmark" style="color:#dc3545;"></i> Missing file
+            `;
+          }
+        }
+      });
+
       showNotification("⚠️ Please fill out all required fields and upload all attachments!", "error");
-    } else {
-      showNotification("All required information is complete! Proceeding...", "success");
-      // Proceed to next page if needed
+      return;
+    }
+
+    // Proceed action (uncomment or change to your navigation)
        window.location.href = "programs.html";
-    }
   });
+})();
 
-  // ======= NOTIFICATION FUNCTIONS =======
-  window.showNotification = function (message, type = "error") {
-    const notification = document.getElementById("notification");
-    const text = document.getElementById("notification-text");
-    text.textContent = message;
-
-    notification.classList.remove("success");
-    notification.classList.remove("error");
-
-    if (type === "success") {
-      notification.classList.add("success");
-    } else {
-      notification.classList.add("error");
-    }
-
-    notification.style.display = "block";
-
-    setTimeout(() => {
-      hideNotification();
-    }, 4000);
-  };
-
-  window.hideNotification = function () {
-    const notification = document.getElementById("notification");
-    notification.style.display = "none";
-  };
-
+// =====================================================
+// Initialize: optionally call updateFileList to show initial state
+// =====================================================
+updateFileList();

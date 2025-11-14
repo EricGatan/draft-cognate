@@ -160,6 +160,34 @@ if (!canvas) {
     hideImage();
   }
 
+  // === Success Notification ===
+function showSuccessNotif() {
+  document.getElementById("notifOverlay").style.display = "flex";
+}
+
+function goToEducAttach() {
+  window.location.href = "educattach.html";
+}
+
+// submit click: ensure conditions then show success popup
+if (submitBtn) {
+  submitBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    if (!hasSignature) {
+      alert('Please upload or draw your signature before submitting.');
+      return;
+    }
+    if (!certifyCheckbox || !certifyCheckbox.checked) {
+      alert('Please check the certification box.');
+      return;
+    }
+
+    // Show success popup ONLY when Submit is clicked
+    showSuccessNotif();
+  });
+}
+
   // --- submit eligibility control ---
   function checkSubmitEligibility() {
     const enabled = !!hasSignature && !!(certifyCheckbox && certifyCheckbox.checked);
