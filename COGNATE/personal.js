@@ -1,193 +1,5 @@
-// ====== js working button personal ======
-
-// ====== Step click navigation ======
-const steps = document.querySelectorAll(".step");
-
-// ====== FIX CURRENT STEP FOR PERSONAL PAGE ======
-let currentStep = 4; // personal.html is step 4
-let maxUnlockedStep = parseInt(localStorage.getItem("maxUnlockedStep")) || currentStep;
-localStorage.setItem("currentStep", currentStep);
-localStorage.setItem("maxUnlockedStep", maxUnlockedStep);
-
-function updateSteps() {
-  steps.forEach((step, index) => {
-    step.classList.toggle("active", index === currentStep);
-    step.classList.toggle("completed", index < currentStep);
-    step.classList.toggle("locked", index > maxUnlockedStep);
-  });
-}
-
-steps.forEach((step, index) => {
-  step.addEventListener("click", () => {
-    if (index > maxUnlockedStep) return;
-
-    if (!canProceed(index)) {
-      highlightMissingFields(index);
-      alert("Please fill out all required fields before proceeding.");
-      return;
-    }
-
-    currentStep = index;
-    if (currentStep === maxUnlockedStep && maxUnlockedStep < steps.length - 1) maxUnlockedStep++;
-
-    updateSteps();
-    if (typeof showSection === "function") showSection(currentStep);
-
-    // Navigate by step
-    const pages = [
-      "welcome.html",
-      "readfirst.html",
-      "confirmation.html",
-      "aap.html",
-      "personal.html",
-      "educattach.html",
-      "programs.html",
-      "form.html",
-      "submit.html"
-    ];
-    window.location.href = pages[currentStep];
-  });
-});
-
-updateSteps();
-
-// ====== NEXT BUTTON FUNCTIONALITY ======
-const nextBtn = document.querySelector(".next-btn");
-
-if (nextBtn) {
-  nextBtn.addEventListener("click", () => {
-    if (!canProceed(currentStep)) {
-      highlightMissingFields(currentStep);
-      alert("Please fill out all required fields before proceeding.");
-      return;
-    }
-
-    // Move to next step
-    if (currentStep < steps.length - 1) {
-      currentStep++;
-      if (currentStep > maxUnlockedStep) maxUnlockedStep = currentStep;
-
-      updateSteps();
-      if (typeof showSection === "function") showSection(currentStep);
-
-      // Navigate to next page
-      const pages = [
-        "welcome.html",
-        "readfirst.html",
-        "confirmation.html",
-        "aap.html",
-        "personal.html",
-        "educattach.html",
-        "programs.html",
-        "form.html",
-        "submit.html"
-      ];
-      window.location.href = pages[currentStep];
-    }
-
-    // Save progress
-    localStorage.setItem("currentStep", currentStep);
-    localStorage.setItem("maxUnlockedStep", maxUnlockedStep);
-  });
-}
-
-// ====== REQUIRED FIELDS CHECK ======
-function canProceed(stepIndex) {
-  switch (stepIndex) {
-    case 0:
-      const firstName = document.getElementById("firstName")?.value.trim();
-      const lastName = document.getElementById("lastName")?.value.trim();
-      const photo = document.getElementById("photoInput")?.files[0];
-      return firstName && lastName && photo;
-
-    case 1:
-      const region = document.getElementById("region")?.value;
-      const province = document.getElementById("province")?.value;
-      const city = document.getElementById("city")?.value;
-      const barangay = document.getElementById("barangay")?.value;
-      return region && province && city && barangay;
-
-    case 2:
-      const hasSiblingsYes = document.getElementById("hasSiblingsYes")?.checked;
-      if (hasSiblingsYes) {
-        const summaryTable = document.querySelector(".siblings-summary-table");
-        return summaryTable.rows.length > 1;
-      }
-      return true;
-
-    default:
-      return true;
-  }
-}
-
-// ====== HIGHLIGHT EMPTY FIELDS ======
-function highlightMissingFields(stepIndex) {
-  document.querySelectorAll('.required-highlight').forEach(el => el.classList.remove('required-highlight'));
-
-  switch(stepIndex) {
-    case 0:
-      const firstName = document.getElementById("firstName");
-      const lastName = document.getElementById("lastName");
-      const photoInput = document.getElementById("photoInput");
-      if (!firstName.value.trim()) firstName.classList.add('required-highlight');
-      if (!lastName.value.trim()) lastName.classList.add('required-highlight');
-      if (!photoInput.files[0]) photoInput.classList.add('required-highlight');
-      break;
-
-    case 1:
-      const fields = ["region", "province", "city", "barangay"];
-      fields.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el.value) el.classList.add('required-highlight');
-      });
-      break;
-
-    case 2:
-      const hasSiblingsYes = document.getElementById("hasSiblingsYes")?.checked;
-      if (hasSiblingsYes) {
-        const summaryTable = document.querySelector(".siblings-summary-table");
-        if (summaryTable.rows.length <= 1) summaryTable.classList.add('required-highlight');
-      }
-      break;
-  }
-}
-
-// ====== HIGHLIGHT EMPTY FIELDS ======
-function highlightMissingFields(stepIndex) {
-  // Remove previous highlights
-  document.querySelectorAll('.required-highlight').forEach(el => el.classList.remove('required-highlight'));
-
-  switch(stepIndex) {
-    case 0:
-      const firstName = document.getElementById("firstName");
-      const lastName = document.getElementById("lastName");
-      const photoInput = document.getElementById("photoInput");
-
-      if (!firstName.value.trim()) firstName.classList.add('required-highlight');
-      if (!lastName.value.trim()) lastName.classList.add('required-highlight');
-      if (!photoInput.files[0]) photoInput.classList.add('required-highlight');
-      break;
-
-    case 1:
-      const fields = ["region", "province", "city", "barangay"];
-      fields.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el.value) el.classList.add('required-highlight');
-      });
-      break;
-
-    case 2:
-      const hasSiblingsYes = document.getElementById("hasSiblingsYes")?.checked;
-      if (hasSiblingsYes) {
-        const summaryTable = document.querySelector(".siblings-summary-table");
-        if (summaryTable.rows.length <= 1) summaryTable.classList.add('required-highlight');
-      }
-      break;
-  }
-}
-
-// ====== Info popups ======
 document.addEventListener('DOMContentLoaded', () => {
+  // ================= POPUP INFO BUTTONS =================
   const infoButtons = document.querySelectorAll('.info-btn');
   infoButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -203,9 +15,18 @@ document.addEventListener('DOMContentLoaded', () => {
       popup.classList.remove('show');
     });
   });
+
+  // ================= CLEAR INPUT ERRORS =================
+  document.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input', () => {
+      el.classList.remove('error');
+      const notif = document.getElementById('error-notif');
+      if (notif) notif.style.display = 'none';
+    });
+  });
 });
 
-// ====== Photo Upload ======
+// ================= PHOTO UPLOAD =================
 function handlePhotoUpload() {
   const fileInput = document.getElementById("photoInput");
   const statusText = document.getElementById("photoStatus");
@@ -213,16 +34,9 @@ function handlePhotoUpload() {
   const errorMsg = document.querySelector(".photo-error");
   const file = fileInput.files[0];
 
-  if (!file) {
+  if (!file || !file.type.startsWith("image/")) {
     errorMsg.style.display = "block";
     statusText.textContent = "No file chosen";
-    photoPreview.style.backgroundImage = "none";
-    return;
-  }
-
-  if (!file.type.startsWith("image/")) {
-    errorMsg.style.display = "block";
-    statusText.textContent = "Invalid file type";
     photoPreview.style.backgroundImage = "none";
     return;
   }
@@ -237,7 +51,21 @@ function handlePhotoUpload() {
   reader.readAsDataURL(file);
 }
 
-// ====== Siblings Table ======
+// ================= SIBLINGS SHOW/HIDE =================
+document.getElementById("hasSiblingsYes").addEventListener("change", () => {
+  document.getElementById("addSiblingHeader").style.display = "block";
+  document.getElementById("addSiblingBox").style.display = "block";
+  document.getElementById("summaryHeader").style.display = "block";
+  document.getElementById("summaryBox").style.display = "block";
+});
+document.getElementById("hasSiblingsNo").addEventListener("change", () => {
+  document.getElementById("addSiblingHeader").style.display = "none";
+  document.getElementById("addSiblingBox").style.display = "none";
+  document.getElementById("summaryHeader").style.display = "block";
+  document.getElementById("summaryBox").style.display = "block";
+});
+
+// ================= ADD/REMOVE SIBLING SUMMARY =================
 function addSiblingToSummary() {
   const inputTable = document.getElementById('siblingsTable');
   const summaryTable = document.querySelector('.siblings-summary-table');
@@ -255,6 +83,7 @@ function addSiblingToSummary() {
   if (noSiblingsRow) noSiblingsRow.parentNode.remove();
 
   const nextNumber = summaryTable.rows.length;
+
   const newRow = summaryTable.insertRow(-1);
   newRow.innerHTML = `
     <td>${nextNumber}</td>
@@ -291,31 +120,12 @@ function removeSummaryRow(button) {
   }
 }
 
-// Show/hide sibling section
-document.getElementById("hasSiblingsYes").addEventListener("change", function () {
-  document.getElementById("addSiblingHeader").style.display = "block";
-  document.getElementById("addSiblingBox").style.display = "block";
-  document.getElementById("summaryHeader").style.display = "block";
-  document.getElementById("summaryBox").style.display = "block";
-});
-
-document.getElementById("hasSiblingsNo").addEventListener("change", function () {
-  document.getElementById("addSiblingHeader").style.display = "none";
-  document.getElementById("addSiblingBox").style.display = "none";
-  document.getElementById("summaryHeader").style.display = "block";
-  document.getElementById("summaryBox").style.display = "block";
-});
-
-// ====== Philippines Address Dropdowns ======
+// ================= PH ADDRESS CASCADING =================
 (() => {
   let data;
-
   fetch('ph_address.json')
     .then(res => res.json())
-    .then(jsonData => {
-      data = jsonData;
-      populateRegions();
-    })
+    .then(jsonData => { data = jsonData; populateRegions(); })
     .catch(err => console.error('Failed to load JSON', err));
 
   const regionSelect = document.getElementById("region");
@@ -326,7 +136,7 @@ document.getElementById("hasSiblingsNo").addEventListener("change", function () 
   function populateRegions() {
     regionSelect.innerHTML = '<option value="">Select Region</option>';
     Object.values(data).forEach(region => {
-      let option = document.createElement("option");
+      const option = document.createElement("option");
       option.value = region.region_name;
       option.text = region.region_name;
       regionSelect.add(option);
@@ -338,27 +148,20 @@ document.getElementById("hasSiblingsNo").addEventListener("change", function () 
     citySelect.innerHTML = '<option value="">Select City/Municipality</option>';
     barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
   });
-
   provinceSelect.addEventListener('change', () => {
     populateCities();
     barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
   });
+  citySelect.addEventListener('change', () => populateBarangays());
 
-  citySelect.addEventListener('change', () => {
-    populateBarangays();
-  });
-
-  function getSelectedRegionObj() {
-    return Object.values(data).find(r => r.region_name === regionSelect.value);
-  }
+  function getSelectedRegionObj() { return Object.values(data).find(r => r.region_name === regionSelect.value); }
 
   function populateProvinces() {
     provinceSelect.innerHTML = '<option value="">Select Province</option>';
-    let selectedRegion = getSelectedRegionObj();
+    const selectedRegion = getSelectedRegionObj();
     if (!selectedRegion) return;
-
     Object.keys(selectedRegion.province_list).forEach(provName => {
-      let option = document.createElement("option");
+      const option = document.createElement("option");
       option.value = provName;
       option.text = provName;
       provinceSelect.add(option);
@@ -367,14 +170,13 @@ document.getElementById("hasSiblingsNo").addEventListener("change", function () 
 
   function populateCities() {
     citySelect.innerHTML = '<option value="">Select City/Municipality</option>';
-    let selectedRegion = getSelectedRegionObj();
+    const selectedRegion = getSelectedRegionObj();
     if (!selectedRegion) return;
-    let provinceObj = selectedRegion.province_list[provinceSelect.value];
+    const provinceObj = selectedRegion.province_list[provinceSelect.value];
     if (!provinceObj) return;
-
     provinceObj.municipality_list.forEach(muni => {
-      let cityName = Object.keys(muni)[0];
-      let option = document.createElement("option");
+      const cityName = Object.keys(muni)[0];
+      const option = document.createElement("option");
       option.value = cityName;
       option.text = cityName;
       citySelect.add(option);
@@ -383,22 +185,76 @@ document.getElementById("hasSiblingsNo").addEventListener("change", function () 
 
   function populateBarangays() {
     barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
-    let selectedRegion = getSelectedRegionObj();
+    const selectedRegion = getSelectedRegionObj();
     if (!selectedRegion) return;
-    let provinceObj = selectedRegion.province_list[provinceSelect.value];
+    const provinceObj = selectedRegion.province_list[provinceSelect.value];
     if (!provinceObj) return;
-
-    let muniObj = provinceObj.municipality_list.find(m => Object.keys(m)[0] === citySelect.value);
+    const muniObj = provinceObj.municipality_list.find(m => Object.keys(m)[0] === citySelect.value);
     if (!muniObj) return;
-
-    let barangays = muniObj[citySelect.value].barangay_list;
+    const barangays = muniObj[citySelect.value].barangay_list;
     if (!barangays) return;
-
     barangays.forEach(brgy => {
-      let option = document.createElement("option");
+      const option = document.createElement("option");
       option.value = brgy;
       option.text = brgy;
       barangaySelect.add(option);
     });
   }
 })();
+
+// ================= NATIONALITY =================
+fetch("nationalities.json")
+  .then(response => response.json())
+  .then(list => {
+    const nationalitySelect = document.getElementById("nationality");
+    if (!nationalitySelect) return;
+    list.forEach(nat => {
+      const option = document.createElement("option");
+      option.value = nat;
+      option.textContent = nat;
+      nationalitySelect.appendChild(option);
+    });
+    const otherOption = document.createElement("option");
+    otherOption.value = "Other";
+    otherOption.textContent = "Other";
+    nationalitySelect.appendChild(otherOption);
+  })
+  .catch(err => console.error("Failed to load nationality list:", err));
+
+// ================= VALIDATION ON NEXT BUTTON =================
+function showNotification(message) {
+  const notif = document.getElementById('error-notif');
+  notif.textContent = message;
+  notif.style.display = 'block';
+  notif.style.opacity = 1;
+  setTimeout(() => { notif.style.opacity = 0; setTimeout(() => { notif.style.display = 'none'; }, 500); }, 4000);
+}
+
+
+/// handle next
+function handleNext() {
+  let error = false;
+  const requiredText = ['lastName','firstName','birthdate','height','email','mobile','telephone'];
+  requiredText.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) { el.classList.add('error'); error = true; }
+  });
+
+  const sex = document.querySelector('input[name="sex"]:checked');
+  if (!sex) error = true;
+
+  const photo = document.getElementById('photoInput');
+  if (!photo.files || !photo.files[0]) { document.querySelector(".photo-error").style.display = "block"; error = true; }
+
+  const hasSiblings = document.querySelector('input[name="hasSiblings"]:checked');
+  if (!hasSiblings) error = true;
+
+  if (hasSiblings && hasSiblings.value === "yes") {
+    const cells = document.getElementById('siblingsTable').querySelectorAll('td[contenteditable="true"]');
+    cells.forEach(cell => { if (!cell.textContent.trim()) { cell.classList.add('error'); error = true; } });
+  }
+
+  if (error) { showNotification("Please complete all required fields before proceeding."); window.scrollTo({top:0, behavior:"smooth"}); return; }
+
+  window.location.href = "educattach.html";
+}
