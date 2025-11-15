@@ -60,18 +60,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Navigate pages based on step
       switch (index) {
-        case 5:
-          window.location.href = "educattach.html";
-          break;
-        case 6:
-          window.location.href = "programs.html";
-          break;
-        case 7:
-          window.location.href = "form.html";
-          break;
-        case 8:
-          window.location.href = "submit.html";
-          break;
+      case 0: window.location.href = "welcome.html"; break;
+      case 1: window.location.href = "readfirst.html"; break;
+      case 2: window.location.href = "confirmation.html"; break;
+      case 3: window.location.href = "aap.html"; break;
+      case 4: window.location.href = "personal.html"; break;
+      case 5: window.location.href = "educattach.html"; break;
+      case 6: window.location.href = "programs.html"; break;
+      case 7: window.location.href = "form.html"; break;
+      case 8: window.location.href = "submit.html"; break;
         // Add more steps/pages here
       }
     });
@@ -336,7 +333,7 @@ window.removeFile = function (fileNumber) {
         }
       });
 
-      showNotification("⚠️ Please fill out all required fields and upload all attachments!", "error");
+      showNotification("Please fill out all required fields and upload all attachments!", "error");
       return;
     }
 
