@@ -1,10 +1,13 @@
 // ====== js working button personal ======
 
-
 // ====== Step click navigation ======
 const steps = document.querySelectorAll(".step");
-let currentStep = parseInt(localStorage.getItem("currentStep")) || 0;
-let maxUnlockedStep = parseInt(localStorage.getItem("maxUnlockedStep")) || 0;
+
+// ====== FIX CURRENT STEP FOR PERSONAL PAGE ======
+let currentStep = 4; // personal.html is step 4
+let maxUnlockedStep = parseInt(localStorage.getItem("maxUnlockedStep")) || currentStep;
+localStorage.setItem("currentStep", currentStep);
+localStorage.setItem("maxUnlockedStep", maxUnlockedStep);
 
 function updateSteps() {
   steps.forEach((step, index) => {
@@ -18,7 +21,6 @@ steps.forEach((step, index) => {
   step.addEventListener("click", () => {
     if (index > maxUnlockedStep) return;
 
-    // ====== VALIDATION ======
     if (!canProceed(index)) {
       highlightMissingFields(index);
       alert("Please fill out all required fields before proceeding.");
@@ -26,26 +28,24 @@ steps.forEach((step, index) => {
     }
 
     currentStep = index;
-
-    if (currentStep === maxUnlockedStep && maxUnlockedStep < steps.length - 1) {
-      maxUnlockedStep++;
-    }
+    if (currentStep === maxUnlockedStep && maxUnlockedStep < steps.length - 1) maxUnlockedStep++;
 
     updateSteps();
-
     if (typeof showSection === "function") showSection(currentStep);
 
-    switch (index) {
-      case 0: window.location.href = "welcome.html"; break;
-      case 1: window.location.href = "readfirst.html"; break;
-      case 2: window.location.href = "confirmation.html"; break;
-      case 3: window.location.href = "aap.html"; break;
-      case 4: window.location.href = "personal.html"; break;
-      case 5: window.location.href = "educattach.html"; break;
-      case 6: window.location.href = "programs.html"; break;
-      case 7: window.location.href = "form.html"; break;
-      case 8: window.location.href = "submit.html"; break;
-    }
+    // Navigate by step
+    const pages = [
+      "welcome.html",
+      "readfirst.html",
+      "confirmation.html",
+      "aap.html",
+      "personal.html",
+      "educattach.html",
+      "programs.html",
+      "form.html",
+      "submit.html"
+    ];
+    window.location.href = pages[currentStep];
   });
 });
 
@@ -56,7 +56,6 @@ const nextBtn = document.querySelector(".next-btn");
 
 if (nextBtn) {
   nextBtn.addEventListener("click", () => {
-    // ====== VALIDATION ======
     if (!canProceed(currentStep)) {
       highlightMissingFields(currentStep);
       alert("Please fill out all required fields before proceeding.");
@@ -71,18 +70,19 @@ if (nextBtn) {
       updateSteps();
       if (typeof showSection === "function") showSection(currentStep);
 
-      // Navigate to page if applicable
-      switch (currentStep) {
-         case 0: window.location.href = "welcome.html"; break;
-      case 1: window.location.href = "readfirst.html"; break;
-      case 2: window.location.href = "confirmation.html"; break;
-      case 3: window.location.href = "aap.html"; break;
-      case 4: window.location.href = "personal.html"; break;
-      case 5: window.location.href = "educattach.html"; break;
-      case 6: window.location.href = "programs.html"; break;
-      case 7: window.location.href = "form.html"; break;
-      case 8: window.location.href = "submit.html"; break;
-      }
+      // Navigate to next page
+      const pages = [
+        "welcome.html",
+        "readfirst.html",
+        "confirmation.html",
+        "aap.html",
+        "personal.html",
+        "educattach.html",
+        "programs.html",
+        "form.html",
+        "submit.html"
+      ];
+      window.location.href = pages[currentStep];
     }
 
     // Save progress
@@ -91,33 +91,64 @@ if (nextBtn) {
   });
 }
 
-
 // ====== REQUIRED FIELDS CHECK ======
 function canProceed(stepIndex) {
-  switch(stepIndex) {
-    case 0: // Personal Info
+  switch (stepIndex) {
+    case 0:
       const firstName = document.getElementById("firstName")?.value.trim();
       const lastName = document.getElementById("lastName")?.value.trim();
       const photo = document.getElementById("photoInput")?.files[0];
       return firstName && lastName && photo;
 
-    case 1: // Address
+    case 1:
       const region = document.getElementById("region")?.value;
       const province = document.getElementById("province")?.value;
       const city = document.getElementById("city")?.value;
       const barangay = document.getElementById("barangay")?.value;
       return region && province && city && barangay;
 
-    case 2: // Siblings
+    case 2:
       const hasSiblingsYes = document.getElementById("hasSiblingsYes")?.checked;
       if (hasSiblingsYes) {
         const summaryTable = document.querySelector(".siblings-summary-table");
-        return summaryTable.rows.length > 1; // at least 1 sibling added
+        return summaryTable.rows.length > 1;
       }
       return true;
 
     default:
       return true;
+  }
+}
+
+// ====== HIGHLIGHT EMPTY FIELDS ======
+function highlightMissingFields(stepIndex) {
+  document.querySelectorAll('.required-highlight').forEach(el => el.classList.remove('required-highlight'));
+
+  switch(stepIndex) {
+    case 0:
+      const firstName = document.getElementById("firstName");
+      const lastName = document.getElementById("lastName");
+      const photoInput = document.getElementById("photoInput");
+      if (!firstName.value.trim()) firstName.classList.add('required-highlight');
+      if (!lastName.value.trim()) lastName.classList.add('required-highlight');
+      if (!photoInput.files[0]) photoInput.classList.add('required-highlight');
+      break;
+
+    case 1:
+      const fields = ["region", "province", "city", "barangay"];
+      fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value) el.classList.add('required-highlight');
+      });
+      break;
+
+    case 2:
+      const hasSiblingsYes = document.getElementById("hasSiblingsYes")?.checked;
+      if (hasSiblingsYes) {
+        const summaryTable = document.querySelector(".siblings-summary-table");
+        if (summaryTable.rows.length <= 1) summaryTable.classList.add('required-highlight');
+      }
+      break;
   }
 }
 
